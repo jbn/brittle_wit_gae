@@ -1,0 +1,5 @@
+Flask==0.12.2
+GoogleAppEngineCloudStorageClient
+brittle_wit_core
+requests
+requests-toolbelt
