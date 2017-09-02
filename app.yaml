@@ -8,6 +8,7 @@ handlers:
 - url: /.*
   script: main.app
 env_variables:
+  CALLBACK_BASE_URI: https://[your-app].appspot.com
   TWITTER_APP_KEY: [YOUR KEY]
   TWITTER_APP_SECRET: [YOUR SECRET]
 libraries:

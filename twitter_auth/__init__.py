@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify, redirect, request
 from requests import request as fetch
 import requests_toolbelt.adapters.appengine
@@ -13,13 +14,18 @@ requests_toolbelt.adapters.appengine.monkeypatch()
 
 APP_CRED = AppCredentials.load_from_env()
 
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine/'):
+    CALLBACK_BASE_URI = os.environ['CALLBACK_BASE_URI']
+else:
+    CALLBACK_BASE_URI = 'http://localhost:8080'
+
 twitter_auth = Blueprint('twitter_auth', 'twitter_auth',
                          template_folder='templates')
 
 
 @twitter_auth.route('/login', methods=['POST'])
 def login():
-    callback_url = "http://localhost:8080/twitter_auth/verify"
+    callback_url = CALLBACK_BASE_URI + "/twitter_auth/verify"
     twitter_req, headers = obtain_request_token(APP_CRED, callback_url)
     resp = fetch(twitter_req.method,
                  twitter_req.url,
